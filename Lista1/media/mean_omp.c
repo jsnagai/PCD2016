@@ -19,40 +19,34 @@
 #include <stdio.h>
 #include <time.h>
 #include <omp.h>
-#define N 100000000
-#define max_threads 8
+#define N 10000000
+#define max_threads 1
 
 
 int main(){
-	double pe_local=0.0,pe;
+	double sum;
 	int i,j;
-	double *arr1,*arr2;
+	double *arr1;
 	arr1 = (double*)malloc(N*sizeof(double));
-	arr2 = (double*)malloc(N*sizeof(double));
 
 	unsigned int seed=time(NULL);
-
+	
 	double start, end;
 	omp_set_num_threads(max_threads); 
 	int aux;
-	for(i=0;i<N;i++){
-		arr1[i]=rand_r(&seed);
-		arr2[i]=rand_r(&seed);
-
-	}
 	start = omp_get_wtime();
-#pragma omp parallel default(none) private(j) shared(arr1,arr2) reduction(+:pe)
+#pragma omp parallel default(none) private(i,j,seed) shared(arr1) reduction(+:sum)
 	{
-#pragma omp for 	
-		for(j=0;j<N;j++){
-			pe += arr1[j]*arr2[j];
+		for(i=0;i<N;i+=max_threads){
+			arr1[i]=rand_r(&seed);
+			sum+=arr1[i];
 		}
 	}
-
+		
 	end = omp_get_wtime();
-	printf(" %lf\t",end-start);
-
-	return 0;
+	printf("media: %lf tempo : %lf",sum/N,end-start);
+	
+		return 0;
 
 }
 
