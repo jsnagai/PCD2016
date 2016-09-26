@@ -4,15 +4,14 @@
 #include <time.h>
 #include <sys/time.h>
 #include <stdint.h>
-#define N 100000
-#define max_thread 2
+#define N 100000000
+#define max_thread 8
 
 double pe_final;
 
 double *a;
 double *b;
 pthread_mutex_t sb; 
-
 
 void *calc(void *threadarg)
 {
@@ -29,7 +28,7 @@ void *calc(void *threadarg)
 }
 
 
-int main(){
+int main(int argc, char *argv[]){
 	int j,t,cj=0,rc;
 	a =(double*)malloc(N*sizeof(double));
 	b=(double*)malloc(N*sizeof(double));

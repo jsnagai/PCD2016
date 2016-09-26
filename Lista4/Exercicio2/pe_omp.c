@@ -19,8 +19,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <omp.h>
-#define N 10000
-#define max_threads 16
+#define N 100000000
+#define max_threads 1
 
 
 int main(){
